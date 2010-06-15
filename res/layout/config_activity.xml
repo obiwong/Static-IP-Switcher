@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_height="wrap_content" android:layout_width="fill_parent">
+	<LinearLayout android:id="@+id/LinearLayout01"
+		android:layout_width="fill_parent"
+		android:orientation="vertical" android:layout_height="fill_parent" android:layout_above="@+id/bottom_layout">
+		<TextView android:id="@+id/TextView01" android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:text="@string/config_label_setup_period"></TextView>
+		<EditText android:layout_height="wrap_content"
+			android:phoneNumber="true" android:layout_width="fill_parent"
+			android:id="@+id/config_edit_minutes"></EditText>
+	</LinearLayout>
+	<LinearLayout android:id="@+id/bottom_layout" android:layout_alignParentBottom="true" android:layout_height="wrap_content" android:layout_width="fill_parent"><Button android:layout_height="wrap_content" android:layout_weight="1" android:id="@+id/config_btn_ok" android:text="@string/config_btn_ok_title" android:layout_width="fill_parent"></Button>
+<Button android:layout_height="wrap_content" android:layout_weight="1" android:id="@+id/config_btn_cancel" android:text="@string/config_btn_cancel_title" android:layout_width="fill_parent"></Button>
+</LinearLayout>
+</RelativeLayout>
