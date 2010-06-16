@@ -134,6 +134,7 @@ public class StaticIpSwitcherAppWidgetProvider extends AppWidgetProvider {
 				
 				// Update to ui
 				RemoteViews rview = updateUi(context, new_stat);
+				bindActions( context, rview );
 				final AppWidgetManager awm = AppWidgetManager.getInstance(context);
 				awm.updateAppWidget(THIS_APPWIDGET, rview);
 				if (DEBUG) Log.i("=ht=", "change ip stat");
@@ -144,6 +145,7 @@ public class StaticIpSwitcherAppWidgetProvider extends AppWidgetProvider {
 			Log.i(TAG, "detect sys stat: " + sys_stat);
 
 			RemoteViews rview = updateUi(context, sys_stat);
+			bindActions( context, rview );
 			final AppWidgetManager awm = AppWidgetManager.getInstance(context);
 			awm.updateAppWidget(THIS_APPWIDGET, rview);
 		}
