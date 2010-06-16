@@ -1,7 +1,6 @@
 package com.htbest2000.staticipswitcher2;
 
 import android.app.Activity;
-import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -22,21 +21,12 @@ public class ConfigActivity extends Activity {
 	public static final String KEY_INTERVAL = "interval";
 	
 	private SharedPreferences mPrefs;
-	private int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setResult(RESULT_CANCELED);
 		this.setContentView(R.layout.config_activity);
 		
-		// get app widget id
-		mAppWidgetId = getIntent().getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
-												AppWidgetManager.INVALID_APPWIDGET_ID);
-		if (AppWidgetManager.INVALID_APPWIDGET_ID == mAppWidgetId) {
-			if (DEBUG) Log.i(TAG, "invalide widget id!");
-		}
-
 		// shared preference
 		mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -44,50 +34,39 @@ public class ConfigActivity extends Activity {
 		btn_ok.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// get pref value
-				int pref_time = mPrefs.getInt(KEY_INTERVAL, 30);
-				
-				// get ui value
-				EditText ui_time_edit = (EditText)findViewById(R.id.config_edit_minutes);
-				int ui_time = Integer.parseInt( ui_time_edit.getText().toString() );
-				if ( ui_time < 0 || ui_time > 60*24*7) {
-					Toast.makeText(ConfigActivity.this, "value must be in [0, 10080]", Toast.LENGTH_SHORT).show();
-					return;
-				}
-
-				if (pref_time == ui_time) {
-					finish();
-				}
-				
-				Log.i(TAG, "PREF val: " + pref_time + ", UI val: " + ui_time);
-
-				// save new update period
-				mPrefs.edit().putInt(KEY_INTERVAL, ui_time).commit();
-				
-				// notify widget to update new period.
-				ConfigActivity.this.sendBroadcast(new Intent(ACTION_UPDATE_PERIOD));
-				Log.i(TAG, "sent ACTION_UPDATE_PERIOD");
-				
-				// return widget id
-	            Intent resultValue = new Intent();
-	            resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
-	            setResult(RESULT_OK, resultValue);
 				finish();
 			}
 		});
-		
-		Button btn_cancel = (Button)findViewById(R.id.config_btn_cancel);
-		btn_cancel.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				finish();
-			}
-		});
-		
-		
+
 		// initialize ui
 		EditText ui_time_edit = (EditText)findViewById(R.id.config_edit_minutes);
 		ui_time_edit.setText( "" + mPrefs.getInt(ConfigActivity.KEY_INTERVAL, 30) );
 	}
 
+	@Override
+	protected void onPause() {
+		super.onPause();
+		
+		// get pref value
+		int pref_time = mPrefs.getInt(KEY_INTERVAL, 30);
+		
+		// get ui value
+		EditText ui_time_edit = (EditText)findViewById(R.id.config_edit_minutes);
+		int ui_time = Integer.parseInt( ui_time_edit.getText().toString() );
+		if ( ui_time < 0 || ui_time > 60*24*7) {
+			Toast.makeText(ConfigActivity.this, "value must be in [0, 10080]", Toast.LENGTH_SHORT).show();
+			return;
+		}
+
+		if (DEBUG) Log.i(TAG, "PREF val: " + pref_time + ", UI val: " + ui_time);
+
+		// save new update period
+		mPrefs.edit().putInt(KEY_INTERVAL, ui_time).commit();
+		
+		// notify widget to update new period.
+		ConfigActivity.this.sendBroadcast(new Intent(ACTION_UPDATE_PERIOD));
+		Log.i(TAG, "sent ACTION_UPDATE_PERIOD");
+		finish();
+	}
+	
 }

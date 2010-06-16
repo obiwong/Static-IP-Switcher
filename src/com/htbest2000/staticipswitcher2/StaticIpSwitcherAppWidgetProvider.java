@@ -41,10 +41,15 @@ public class StaticIpSwitcherAppWidgetProvider extends AppWidgetProvider {
     private static final ComponentName THIS_APPWIDGET =
         new ComponentName("com.htbest2000.staticipswitcher2",
         				  "com.htbest2000.staticipswitcher2.StaticIpSwitcherAppWidgetProvider");
+    
+    // is widget(s) in home screen?
+    private static boolean sWidgetShowed = false;
 
     // access ui data
+    // ==============
 	private static int mStaticIpStat = -1;
 	private static Object mStaticIpStatLock = new Object();
+	//
 	private static int getUiStaticIpStat() {
 		synchronized (mStaticIpStatLock) {
 			return mStaticIpStat;
@@ -55,7 +60,7 @@ public class StaticIpSwitcherAppWidgetProvider extends AppWidgetProvider {
 			mStaticIpStat = stat;
 		}
 	}
-	// ---------------
+    // ==============
 
 	// create a new alarm.
 	private void createAlarm(Context ctx, int minutes) {
@@ -79,7 +84,7 @@ public class StaticIpSwitcherAppWidgetProvider extends AppWidgetProvider {
 		if (0 == minutes) {
 			return;
 		}
-		
+
 		am.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, next, mic_seconds,
 				mPendingIntentCheckPeriod);
 		Log.i(TAG, "createAlarm: " + minutes + ", seconds: " + mic_seconds);
@@ -107,35 +112,30 @@ public class StaticIpSwitcherAppWidgetProvider extends AppWidgetProvider {
         bindActions( context, view );
         final int N = appWidgetIds.length;
         for (int i=0; i<N; i++) {
+        	if (DEBUG) Log.d(TAG, "    onUpdate detail: " + appWidgetIds[i]);
             appWidgetManager.updateAppWidget(appWidgetIds[i], view);
         }
+        
+        // launch for configuration
+        context.startActivity(new Intent(context, ConfigActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
     }
 
     @Override
     public void onDeleted(Context context, int[] appWidgetIds) {
     	super.onDeleted(context, appWidgetIds);
     	if (DEBUG) Log.i(TAG, "onDeleted");
-//        final int N = appWidgetIds.length;
-//        for (int i=0; i<N; i++) {
-//            int appWidgetId = appWidgetIds[i];
-//        }
     }
 
     @Override
     public void onEnabled(final Context ctx) {
     	if (DEBUG) Log.i(TAG, "onEnabled");
-    	
-    	// get prefered value
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
-		final int period = prefs.getInt(ConfigActivity.KEY_INTERVAL, 30); // 30 is default value
-
-		// set alarm
-    	createAlarm(ctx, period);
+    	sWidgetShowed = true;
     }
 
     @Override
     public void onDisabled(Context ctx) {
     	if (DEBUG) Log.i(TAG, "onDisable");
+    	sWidgetShowed = false;
     	cancelAlarm( ctx );
     }
     
@@ -155,7 +155,7 @@ public class StaticIpSwitcherAppWidgetProvider extends AppWidgetProvider {
 				Utils.setIpStat( context,  new_stat );
 				setUiStaticIpStat( new_stat );
 				
-				// map system settings to ui
+				// Update to ui
 				RemoteViews rview = updateUi(context);
 				final AppWidgetManager awm = AppWidgetManager.getInstance(context);
 				awm.updateAppWidget(THIS_APPWIDGET, rview);
@@ -174,23 +174,25 @@ public class StaticIpSwitcherAppWidgetProvider extends AppWidgetProvider {
 			}
 		}
 		else if (act.equals(ConfigActivity.ACTION_UPDATE_PERIOD)) {
-				// ConfigActivity make something changed, so need to re-set the
-				// alarm.
+			// ConfigActivity make setting altered, so need to reset the alarm
+			if (DEBUG) Log.i(TAG, "update period: " + sWidgetShowed);
+			if (sWidgetShowed) {
 				SharedPreferences prefs = PreferenceManager
 						.getDefaultSharedPreferences(context);
 				int interval = prefs.getInt(ConfigActivity.KEY_INTERVAL, 30);
 				createAlarm(context, interval);
+			}
 		}
 	}
 
-	private static void bindActions(Context ctx, RemoteViews views) {
+	public static void bindActions(Context ctx, RemoteViews views) {
         Intent launchIntent = new Intent(SET_STATIC_IP_STAT);
         launchIntent.setClass(ctx, StaticIpSwitcherAppWidgetProvider.class);
         PendingIntent pi = PendingIntent.getBroadcast(ctx, 0, launchIntent, 0);
         views.setOnClickPendingIntent(R.id.btn_switch, pi);
 	}
 
-	private static RemoteViews updateUi(Context ctx) {
+	public static RemoteViews updateUi(Context ctx) {
     	String title;
 		if (0 == getUiStaticIpStat()) {
 			title = "static IP: OFF";

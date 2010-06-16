@@ -10,7 +10,7 @@
 			android:phoneNumber="true" android:layout_width="fill_parent"
 			android:id="@+id/config_edit_minutes"></EditText>
 	</LinearLayout>
-	<LinearLayout android:id="@+id/bottom_layout" android:layout_alignParentBottom="true" android:layout_height="wrap_content" android:layout_width="fill_parent"><Button android:layout_height="wrap_content" android:layout_weight="1" android:id="@+id/config_btn_ok" android:text="@string/config_btn_ok_title" android:layout_width="fill_parent"></Button>
-<Button android:layout_height="wrap_content" android:layout_weight="1" android:id="@+id/config_btn_cancel" android:text="@string/config_btn_cancel_title" android:layout_width="fill_parent"></Button>
+	<LinearLayout android:id="@+id/bottom_layout" android:layout_alignParentBottom="true" android:layout_height="wrap_content" android:layout_width="fill_parent"><Button android:layout_height="wrap_content" android:layout_weight="1" android:id="@+id/config_btn_ok" android:text="@string/config_btn_ok_title" android:layout_width="fill_parent" android:layout_marginLeft="5dp" android:layout_marginRight="5dp"></Button>
+
 </LinearLayout>
 </RelativeLayout>
