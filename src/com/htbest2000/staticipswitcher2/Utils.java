@@ -46,7 +46,6 @@ public class Utils {
 		}
 		return new_stat;
 	}
-	
  
 
 }

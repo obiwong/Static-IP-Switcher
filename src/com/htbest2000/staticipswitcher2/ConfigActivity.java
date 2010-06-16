@@ -64,7 +64,7 @@ public class ConfigActivity extends Activity {
 		mPrefs.edit().putInt(KEY_INTERVAL, ui_time).commit();
 		
 		// notify widget to update new period.
-		ConfigActivity.this.sendBroadcast(new Intent(ACTION_UPDATE_PERIOD));
+		ConfigActivity.this.sendBroadcast(new Intent(ACTION_UPDATE_PERIOD).putExtra("config", true));
 		Log.i(TAG, "sent ACTION_UPDATE_PERIOD");
 		finish();
 	}
