@@ -35,6 +35,8 @@ public class StaticIpSwitcherAppWidgetProvider extends AppWidgetProvider {
 
 	private static final String SET_STATIC_IP_STAT  = "com.htbest2000.staticipswitcher2.reset_static_ip_stat";
 	private static final String GET_SYSTEM_SETTINGS = "com.htbest2000.staticipswitcher2.get_system_settings";
+	
+	private static final String KEY_LAST_WIDGET_STAT = "wshow";
 
 	PendingIntent mPendingIntentCheckPeriod;
 
@@ -106,13 +108,13 @@ public class StaticIpSwitcherAppWidgetProvider extends AppWidgetProvider {
     @Override
     public void onEnabled(final Context ctx) {
     	if (DEBUG) Log.i(TAG, "onEnabled");
-    	getPrefs(ctx).edit().putBoolean("wshow", true).commit();
+    	getPrefs(ctx).edit().putBoolean(KEY_LAST_WIDGET_STAT, true).commit();
     }
 
     @Override
     public void onDisabled(Context ctx) {
     	if (DEBUG) Log.i(TAG, "onDisable");
-    	getPrefs(ctx).edit().putBoolean("wshow", false).commit();
+    	getPrefs(ctx).edit().putBoolean(KEY_LAST_WIDGET_STAT, false).commit();
     	cancelAlarm( ctx );
     }
     
@@ -151,10 +153,10 @@ public class StaticIpSwitcherAppWidgetProvider extends AppWidgetProvider {
 		}
 		else if (act.equals(ConfigActivity.ACTION_UPDATE_PERIOD)) {
 			// ConfigActivity make setting altered, so need to reset the alarm
-			boolean showed = getPrefs(context).getBoolean("wshow", false);
+			boolean showed = getPrefs(context).getBoolean(KEY_LAST_WIDGET_STAT, false);
 			if (DEBUG) Log.i(TAG, "update period: " + showed);
 			if (showed) {
-				int interval = getPrefs(context).getInt(ConfigActivity.KEY_INTERVAL, 30);
+				int interval = getPrefs(context).getInt(ConfigActivity.KEY_INTERVAL, ConfigActivity.DEVAULT_UPDATE_PERIOD);
 				createAlarm(context, interval);
 			}
 		}

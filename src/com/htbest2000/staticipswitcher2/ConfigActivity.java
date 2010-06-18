@@ -15,6 +15,8 @@ public class ConfigActivity extends Activity {
 	private static final String TAG = "=ht=";
 	private static final boolean DEBUG = true;
 	
+	public static final int DEVAULT_UPDATE_PERIOD = 0;
+	
 	// to notify widget to use new period
 	public static final String ACTION_UPDATE_PERIOD = "com.htbest2000.staticipswitcher2.updateperiod";
 	
@@ -40,7 +42,7 @@ public class ConfigActivity extends Activity {
 
 		// initialize ui
 		EditText ui_time_edit = (EditText)findViewById(R.id.config_edit_minutes);
-		ui_time_edit.setText( "" + mPrefs.getInt(ConfigActivity.KEY_INTERVAL, 30) );
+		ui_time_edit.setText( "" + mPrefs.getInt(ConfigActivity.KEY_INTERVAL, DEVAULT_UPDATE_PERIOD) );
 	}
 
 	@Override
@@ -48,7 +50,7 @@ public class ConfigActivity extends Activity {
 		super.onPause();
 		
 		// get pref value
-		int pref_time = mPrefs.getInt(KEY_INTERVAL, 30);
+		int pref_time = mPrefs.getInt(KEY_INTERVAL, DEVAULT_UPDATE_PERIOD);
 		
 		// get ui value
 		EditText ui_time_edit = (EditText)findViewById(R.id.config_edit_minutes);
