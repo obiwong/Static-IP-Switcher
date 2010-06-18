@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="hello">Hello World!</string>
-    <string name="app_name">StaticIpSwitcher2</string>
-<string name="config_label_setup_period">Set update period: (minutes)</string>
-<string name="config_btn_ok_title">OK</string>
-<string name="config_btn_cancel_title">Cancel</string>
+	<string name="app_name">StaticIpSwitcher2</string>
+	<string name="config_label_setup_period">Set update period: (minutes)</string>
+	<string name="config_btn_ok_title">OK</string>
+	<string name="config_btn_cancel_title">Cancel</string>
+	<string name="period_limit_range">value must be in [0, 10080]</string>
+	<string name="btn_title_static_ip_on">static IP: ON</string>
+	<string name="btn_title_static_ip_off">static IP: OFF</string>
 </resources>

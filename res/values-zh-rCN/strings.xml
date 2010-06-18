@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">静态IP切换开关</string>
+	<string name="config_label_setup_period">状态更新周期: (分钟)</string>
+	<string name="config_btn_ok_title">确定</string>
+	<string name="config_btn_cancel_title">取消</string>
+	<string name="period_limit_range">取值范围只能是 [0, 10080]</string>
+	<string name="btn_title_static_ip_on">静态IP: 已打开</string>
+	<string name="btn_title_static_ip_off">静态IP: 已关闭</string>
+</resources>

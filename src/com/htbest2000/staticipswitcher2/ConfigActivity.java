@@ -54,7 +54,7 @@ public class ConfigActivity extends Activity {
 		EditText ui_time_edit = (EditText)findViewById(R.id.config_edit_minutes);
 		int ui_time = Integer.parseInt( ui_time_edit.getText().toString() );
 		if ( ui_time < 0 || ui_time > 60*24*7) {
-			Toast.makeText(ConfigActivity.this, "value must be in [0, 10080]", Toast.LENGTH_SHORT).show();
+			Toast.makeText(ConfigActivity.this, R.string.period_limit_range, Toast.LENGTH_SHORT).show();
 			return;
 		}
 

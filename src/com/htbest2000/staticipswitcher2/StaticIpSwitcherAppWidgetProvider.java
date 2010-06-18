@@ -173,12 +173,12 @@ public class StaticIpSwitcherAppWidgetProvider extends AppWidgetProvider {
 	}
 
 	public static RemoteViews updateUi(Context ctx, int stat) {
-    	String title;
+    	final String title;
 		if (0 == stat) {
-			title = "static IP: OFF";
+			title = ctx.getString(R.string.btn_title_static_ip_off);
 		}
 		else {
-			title = "static IP: ON";
+			title = ctx.getString(R.string.btn_title_static_ip_on);
 		}
 
         RemoteViews views = new RemoteViews(ctx.getPackageName(), R.layout.appwidget_provider);
