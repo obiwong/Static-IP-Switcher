@@ -31,6 +31,12 @@ public class ConfigActivity extends Activity {
 		
 		// shared preference
 		mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+		
+		if (mPrefs.getBoolean("just_boot", false)) {
+			Log.i("=ht=", "just boot, so finish() self");
+			mPrefs.edit().putBoolean("just_boot", false).commit();
+			finish();
+		}
 
 		Button btn_ok = (Button)findViewById(R.id.config_btn_ok);
 		btn_ok.setOnClickListener(new View.OnClickListener() {
