@@ -175,16 +175,16 @@ public class StaticIpSwitcherAppWidgetProvider extends AppWidgetProvider {
 	}
 
 	public static RemoteViews updateUi(Context ctx, int stat) {
-    	final String title;
+    	final int imgid;
 		if (0 == stat) {
-			title = ctx.getString(R.string.btn_title_static_ip_off);
+			imgid = R.drawable.switch_off;
 		}
 		else {
-			title = ctx.getString(R.string.btn_title_static_ip_on);
+			imgid = R.drawable.switch_on;
 		}
 
         RemoteViews views = new RemoteViews(ctx.getPackageName(), R.layout.appwidget_provider);
-        views.setTextViewText(R.id.btn_switch, title);
+        views.setImageViewResource(R.id.btn_switch, imgid);
         return views;
 	}
 
